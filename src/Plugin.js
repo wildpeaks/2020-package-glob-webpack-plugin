@@ -1,5 +1,5 @@
 'use strict';
-const {basename, extname, normalize} = require('path');
+const {basename, extname, join} = require('path');
 const fg = require('fast-glob');
 const globParent = require('glob-parent');
 const PLUGIN_ID = 'wildpeaks-glob-plugin';
@@ -8,7 +8,14 @@ const PLUGIN_ID = 'wildpeaks-glob-plugin';
 class Plugin {
 
 	constructor(pattern = './src/*.js', mapFunction){
+		if (typeof pattern !== 'string'){
+			throw new Error('The glob pattern should be a string');
+		}
 		this.pattern = pattern;
+
+		if ((typeof mapFunction !== 'undefined') && (typeof mapFunction !== 'function')){
+			throw new Error('The entry mapping function should be a function or remain undefined');
+		}
 		if (typeof mapFunction === 'function'){
 			this.mapFunction = mapFunction;
 		} else {
@@ -17,20 +24,18 @@ class Plugin {
 				filepath
 			];
 		}
-		this.mapFunction = mapFunction;
 	}
 
 	apply(compiler){
 		compiler.options.entry = () => Object.fromEntries(
 			fg
-			.sync([this.pattern], {dot: false, followSymbolicLinks: true})
+			.sync([this.pattern], {dot: false, followSymbolicLinks: true, cwd: compiler.context})
 			.sort()
 			.map(this.mapFunction)
 		);
 		compiler.hooks.afterCompile.tap(PLUGIN_ID, compilation => {
-			const globBase = globParent(this.pattern);
 			compilation.contextDependencies.add(
-				normalize(globBase)
+				join(compiler.context, globParent(this.pattern))
 			);
 		});
 	}
