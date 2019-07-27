@@ -64,15 +64,18 @@ async function getFiles(folder){
 
 
 async function getFilesContents(folder){
-	return Object.fromEntries(
-		await asyncArrayMap(
-			await getFiles(folder),
-			async filepath => [
-				filepath,
-				await readFromFile(join(folder, filepath))
-			]
-		)
+	const filepaths = await getFiles(folder);
+	const contents = await Promise.all(
+		filepaths.map(filepath => readFromFile(join(folder, filepath)))
 	);
+
+	const results = {};
+	const l = filepaths.length;
+	for (let i = 0; i < l; i++){
+		results[filepaths[i]] = contents[i];
+	}
+
+	return results;
 }
 
 
