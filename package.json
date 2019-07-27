@@ -1,0 +1,47 @@
+{
+  "name": "@wildpeaks/glob-webpack-plugin",
+  "version": "1.0.0-alpha1",
+  "description": "Webpack config to define entry with a glob",
+  "author": "Cecile Muller",
+  "license": "MIT",
+  "eslintConfig": {
+    "extends": "@wildpeaks/commonjs"
+  },
+  "types": "src/Plugin.d.ts",
+  "main": "src/Plugin.js",
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test": "mocha test/*.spec.js",
+    "test:azure": "mocha test/*.spec.js --reporter mocha-junit-reporter --reporter-options mochaFile=./test-results.xml"
+  },
+  "repository": "https://github.com/wildpeaks/package-glob-webpack-plugin",
+  "keywords": [
+    "wildpeaks",
+    "webpack",
+    "plugin",
+    "glob"
+  ],
+  "bugs": {
+    "url": "https://github.com/wildpeaks/package-glob-webpack-plugin/issues"
+  },
+  "homepage": "https://github.com/wildpeaks/package-glob-webpack-plugin#readme",
+  "dependencies": {
+    "fast-glob": "3.0.4",
+    "glob-parent": "5.0.0"
+  },
+  "devDependencies": {
+    "@wildpeaks/async": "1.2.2",
+    "@wildpeaks/eslint-config-commonjs": "6.2.0",
+    "eslint": "6.1.0",
+    "mocha": "6.2.0",
+    "mocha-junit-reporter": "1.23.1",
+    "recursive-readdir": "2.2.2",
+    "rimraf": "2.6.3",
+    "webpack": "4.37.0"
+  },
+  "peerDependencies": {
+    "webpack": "*"
+  }
+}
