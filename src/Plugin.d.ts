@@ -1,5 +1,5 @@
 declare module "@wildpeaks/glob-webpack-plugin" {
-	type EntryMapCallback = (filepath: string) => [string, string];
+	type EntryMapCallback = (filepath: string) => string;
 
 	class Plugin {
 		private pattern: string;
@@ -7,7 +7,7 @@ declare module "@wildpeaks/glob-webpack-plugin" {
 
 		/**
 		 * @param pattern Glob pattern (e.g. `'./src/*.js'`)
-		 * @param mapFunction Function to convert a filepath to a tuple `[ EntryId, EntryPath ]`
+		 * @param mapFunction Function to calculate the Entry Name matching a given filepath
 		 */
 		constructor(pattern: string, mapFunction: EntryMapCallback);
 
