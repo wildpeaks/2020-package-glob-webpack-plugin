@@ -387,9 +387,8 @@ describe('Watch mode', function(){
 				),
 				'utf8'
 			);
+			throws = false;
 		}
-
-		throws = false;
 		try {
 			await waitUntilBuild(2, 2000);
 		} catch(e){
@@ -444,28 +443,35 @@ describe('Watch mode', function(){
 		} catch(e){}
 
 		let throws = false;
-		try {
-			await waitUntilBuild(2, 2000);
-		} catch(e){
-			throws = true;
-		}
-		strictEqual(throws, true, `Deleting an entry doesn't trigger a rebuild`);
+		if (isWindows){
+			try {
+				await waitUntilBuild(2, 2000);
+			} catch(e){
+				throws = true;
+			}
+			strictEqual(throws, true, `Deleting an entry doesn't trigger a rebuild`);
 
-		writeFileSync(
-			join(fixtureSrcFolder, 'initial-2.js'),
-			readFileSync(
+			writeFileSync(
 				join(fixtureSrcFolder, 'initial-2.js'),
+				readFileSync(
+					join(fixtureSrcFolder, 'initial-2.js'),
+					'utf8'
+				),
 				'utf8'
-			),
-			'utf8'
-		);
-		throws = false;
+			);
+			throws = false;
+		}
+
 		try {
 			await waitUntilBuild(2, 2000);
 		} catch(e){
 			throws = true;
 		}
-		strictEqual(throws, false, `Saving unmodified contents triggers a rebuild`);
+		if (isWindows){
+			strictEqual(throws, false, `Saving unmodified contents triggers a rebuild`);
+		} else {
+			strictEqual(throws, false, `Second build didn't timeout`);
+		}
 
 		deepStrictEqual(
 			builds[1],
