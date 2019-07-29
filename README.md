@@ -27,7 +27,7 @@ module.exports = {
 
 ## Entry identifiers
 
-By default, it uses the filename as Entry ID.
+By default, it uses the filename as Entry Name.
 
 So, for example, `./src/app1.js` would produce this entry:
 ````json
@@ -36,8 +36,7 @@ So, for example, `./src/app1.js` would produce this entry:
 }
 ````
 
-You can provide a function to choose how the name is calculated:
-it must return an array with two strings: the ID and its matching filepath.
+You can provide a function to provide a custom name:
 
 ````js
 const {basename} = require('path');
@@ -46,10 +45,10 @@ const GlobPlugin = require('@wildpeaks/glob-webpack-plugin');
 module.exports = {
 	target: 'web',
 	plugins: [
-		new GlobPlugin('./src/*.js', filepath => {
-			const entryId = 'bundle-' + basename(filepath, '.js');
-			return [entryId, filepath];
-		})
+		new GlobPlugin(
+			'./src/*.js',
+			filepath => 'bundle-' + basename(filepath, '.js')
+		)
 	]
 };
 ````

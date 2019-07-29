@@ -19,20 +19,22 @@ class Plugin {
 		if (typeof mapFunction === 'function'){
 			this.mapFunction = mapFunction;
 		} else {
-			this.mapFunction = filepath => [
-				basename(filepath, extname(filepath)),
-				filepath
-			];
+			this.mapFunction = filepath => basename(filepath, extname(filepath));
 		}
 	}
 
 	apply(compiler){
-		compiler.options.entry = () => Object.fromEntries(
+		compiler.options.entry = () => {
+			const entries = {};
 			fg
 			.sync([this.pattern], {dot: false, followSymbolicLinks: true, cwd: compiler.context})
-			.sort()
-			.map(this.mapFunction)
-		);
+			.forEach(filepath => {
+				const name = this.mapFunction(filepath);
+				entries[name] = filepath;
+			});
+			return entries;
+		};
+
 		compiler.hooks.afterCompile.tap(PLUGIN_ID, compilation => {
 			compilation.contextDependencies.add(
 				join(compiler.context, globParent(this.pattern))

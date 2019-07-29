@@ -1,6 +1,6 @@
 {
   "name": "@wildpeaks/glob-webpack-plugin",
-  "version": "1.0.0-alpha1",
+  "version": "1.0.0-alpha2",
   "description": "Webpack config to define entry with a glob",
   "author": "Cecile Muller",
   "license": "MIT",
@@ -32,14 +32,13 @@
     "glob-parent": "5.0.0"
   },
   "devDependencies": {
-    "@wildpeaks/async": "1.2.2",
     "@wildpeaks/eslint-config-commonjs": "6.2.0",
     "eslint": "6.1.0",
     "mocha": "6.2.0",
     "mocha-junit-reporter": "1.23.1",
-    "recursive-readdir": "2.2.2",
     "rimraf": "2.6.3",
-    "webpack": "4.37.0"
+    "webpack": "4.38.0",
+    "webpack-cli": "3.3.6"
   },
   "peerDependencies": {
     "webpack": "*"
