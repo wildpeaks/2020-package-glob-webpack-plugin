@@ -8,6 +8,7 @@ const {spawn} = require('child_process');
 const {mkdirSync, renameSync, unlinkSync, readFileSync, writeFileSync} = require('fs');
 const {join} = require('path');
 const rimraf = require('rimraf');
+const isWindows = process.platform.includes('win');
 
 
 let builds = [];
@@ -369,29 +370,36 @@ describe('Watch mode', function(){
 			join(fixtureSrcFolder, 'initial-1.js'),
 			join(fixtureSrcFolder, 'renamed-1.js')
 		);
-		let throws = false;
-		try {
-			await waitUntilBuild(2, 2000);
-		} catch(e){
-			throws = true;
-		}
-		strictEqual(throws, true, `Renaming isn't enough to trigger a rebuild`);
 
-		writeFileSync(
-			join(fixtureSrcFolder, 'renamed-1.js'),
-			readFileSync(
+		let throws = false;
+		if (isWindows){
+			try {
+				await waitUntilBuild(2, 2000);
+			} catch(e){
+				throws = true;
+			}
+			strictEqual(throws, true, `Renaming isn't enough to trigger a rebuild`);
+			writeFileSync(
 				join(fixtureSrcFolder, 'renamed-1.js'),
+				readFileSync(
+					join(fixtureSrcFolder, 'renamed-1.js'),
+					'utf8'
+				),
 				'utf8'
-			),
-			'utf8'
-		);
+			);
+		}
+
 		throws = false;
 		try {
 			await waitUntilBuild(2, 2000);
 		} catch(e){
 			throws = true;
 		}
-		strictEqual(throws, false, `Saving unmodified contents triggers a rebuild`);
+		if (isWindows){
+			strictEqual(throws, false, `Saving unmodified contents triggers a rebuild`);
+		} else {
+			strictEqual(throws, false, `Second build didn't timeout`);
+		}
 
 		deepStrictEqual(
 			builds[1],
