@@ -30,4 +30,5 @@
 
 .DS_Store
 Thumbs.db
+/test/fixtures/*/dist
 /test/fixtures/watch
