@@ -1,5 +1,7 @@
 # Glob Webpack Plugin
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/wildpeaks/package-glob-webpack-plugin.svg)](https://greenkeeper.io/)
+
 Webpack 4.x plugin to define `entry` using a **glob**.
 
 It also **updates the list of entries in --watch mode**, without having to restart Webpack.
