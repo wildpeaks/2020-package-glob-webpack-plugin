@@ -63,10 +63,8 @@ In this example, `./src/app1.js` would produce this entry:
 
 ## Known limitations
 
-Webpack doesn't trigger updating the list of entry when a file is merely renamed,
-but renaming + saving does.
-
-Also, it currently overwrites `entry` (because it's meant to replace),
+It currently overwrites `entry` (because it's meant to replace),
 so if you need multiple globs, your webpack.config.js can export an array of Webpack configs,
 each with its own glob.
 
+On Windows, merely renaming or deleting an entry doesn't trigger a rebuild, but creating or updating files do.
