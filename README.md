@@ -7,6 +7,7 @@ Webpack 4.x plugin to define `entry` using a **glob**.
 It also **updates the list of entries in --watch mode**, without having to restart Webpack.
 
 
+---
 ## Quickstart
 
 Install:
@@ -19,14 +20,17 @@ Then use it in your `webpack.config.js`:
 const GlobPlugin = require('@wildpeaks/glob-webpack-plugin');
 
 module.exports = {
-  target: 'web',
-  plugins: [
-    new GlobPlugin('./src/*.js')
-  ]
+	target: 'web',
+	plugins: [
+		new GlobPlugin({
+			entries: './src/*.js'
+		})
+	]
 };
 ````
 
 
+---
 ## Entry identifiers
 
 By default, it uses the filename as Entry Name.
@@ -47,10 +51,10 @@ const GlobPlugin = require('@wildpeaks/glob-webpack-plugin');
 module.exports = {
 	target: 'web',
 	plugins: [
-		new GlobPlugin(
-			'./src/*.js',
-			filepath => 'bundle-' + basename(filepath, '.js')
-		)
+		new GlobPlugin({
+			entries: './src/*.js',
+			entriesMap: filepath => 'bundle-' + basename(filepath, '.js')
+		})
 	]
 };
 ````
@@ -63,6 +67,32 @@ In this example, `./src/app1.js` would produce this entry:
 ````
 
 
+---
+## Polyfills
+
+Property `polyfills` prepends modules to every entry:
+
+````js
+const {basename} = require('path');
+const GlobPlugin = require('@wildpeaks/glob-webpack-plugin');
+
+module.exports = {
+	target: 'web',
+	plugins: [
+		new GlobPlugin({
+			entries: './src/*.js',
+			polyfills: [
+				'polyfill-module',
+				'./src/local-polyfill.js',
+				'./src/reset.css'
+			]
+		})
+	]
+};
+````
+
+
+---
 ## Known limitations
 
 It currently overwrites `entry` (because it's meant to replace),

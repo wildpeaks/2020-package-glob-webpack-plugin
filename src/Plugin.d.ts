@@ -1,16 +1,24 @@
 declare module "@wildpeaks/glob-webpack-plugin" {
 	type EntryMapCallback = (filepath: string) => string;
 
+	type Options = {
+
+		/** Glob pattern (e.g. `'./src/*.js'`) */
+		entries: string;
+
+		/** Function to calculate the Entry Name matching a given filepath */
+		entriesMap?: EntryMapCallback;
+
+		/** Modules prepended to every entrypoint */
+		polyfills?: string[];
+	};
+
 	class Plugin {
-		private pattern: string;
-		private mapFunction: EntryMapCallback;
+		private entries: string;
+		private entriesMap: EntryMapCallback;
+		private polyfills: string[];
 
-		/**
-		 * @param pattern Glob pattern (e.g. `'./src/*.js'`)
-		 * @param mapFunction Function to calculate the Entry Name matching a given filepath
-		 */
-		constructor(pattern: string, mapFunction: EntryMapCallback);
-
+		constructor(options: Options);
 		public apply(compiler: any): void;
 	}
 
