@@ -1,6 +1,6 @@
 /* eslint-env node */
 'use strict';
-const {basename, join} = require('path');
+const {join} = require('path');
 const GlobPlugin = require('../../..');
 const StatsPlugin = require('../../StatsPlugin.js');
 
@@ -19,8 +19,11 @@ module.exports = {
 	},
 	plugins: [
 		new GlobPlugin({
-			entries: './src/*.js',
-			entriesMap: filepath => 'custom-' + basename(filepath, '.js')
+			entries: './src/node_modules/apps/*.js',
+			polyfills: [
+				'./src/polyfill1.js',
+				'thirdparty-polyfill'
+			]
 		}),
 		new StatsPlugin()
 	]

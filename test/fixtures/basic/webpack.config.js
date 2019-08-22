@@ -1,7 +1,7 @@
 /* eslint-env node */
 'use strict';
 const {join} = require('path');
-const GlobEntryPlugin = require('../../..');
+const GlobPlugin = require('../../..');
 const StatsPlugin = require('../../StatsPlugin.js');
 
 module.exports = {
@@ -18,7 +18,9 @@ module.exports = {
 		hints: false
 	},
 	plugins: [
-		new GlobEntryPlugin('./src/*.js'),
+		new GlobPlugin({
+			entries: './src/*.js'
+		}),
 		new StatsPlugin()
 	]
 };
