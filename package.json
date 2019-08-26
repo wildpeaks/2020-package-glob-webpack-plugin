@@ -32,7 +32,7 @@
     "glob-parent": "5.0.0"
   },
   "devDependencies": {
-    "@wildpeaks/eslint-config-commonjs": "6.3.0",
+    "@wildpeaks/eslint-config-commonjs": "7.0.0",
     "eslint": "6.2.1",
     "mocha": "6.2.0",
     "mocha-junit-reporter": "1.23.1",
