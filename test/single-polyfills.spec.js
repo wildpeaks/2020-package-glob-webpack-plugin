@@ -3,64 +3,83 @@
 /* eslint-disable prefer-arrow-callback */
 'use strict';
 const {deepStrictEqual, strictEqual} = require('assert');
-const WebpackRunner = require('./WebpackRunner.js');
-const runner = new WebpackRunner('polyfills');
+const {join} = require('path');
+const webpack = require('webpack');
+
+const GlobPlugin = require('..');
+const {resetSingle, TestPlugin} = require('./shared.js');
 
 
-after(async function(){
-	await runner.stop();
-});
-
-
-it('Single: Polyfills', async function(){
+it('Single: Polyfills', function(done){
 	this.slow(8000);
-	this.timeout(60000);
+	this.timeout(12000);
 
-	runner.resetSingle();
-	runner.start();
+	const folder = join(__dirname, 'fixtures/polyfills');
+	resetSingle(folder);
+	const testplugin = new TestPlugin();
 
-	let throws = false;
-	try {
-		await runner.waitUntilBuild(1);
-	} catch(e){
-		throws = true;
-	}
-	strictEqual(throws, false, `First build runs`);
-	deepStrictEqual(
-		runner.builds[0],
-		{
-			input: {
-				'module-1': [
-					'./src/polyfill1.js',
-					'thirdparty-polyfill',
-					'./src/node_modules/apps/module-1.js'
-				],
-				'module-2': [
-					'./src/polyfill1.js',
-					'thirdparty-polyfill',
-					'./src/node_modules/apps/module-2.js'
-				],
-				'module-3': [
-					'./src/polyfill1.js',
-					'thirdparty-polyfill',
-					'./src/node_modules/apps/module-3.js'
-				]
-			},
-			output: {
-				'module-1': {
-					chunks: ['module-1'],
-					assets: ['module-1.js']
-				},
-				'module-2': {
-					chunks: ['module-2'],
-					assets: ['module-2.js']
-				},
-				'module-3': {
-					chunks: ['module-3'],
-					assets: ['module-3.js']
-				}
-			}
+	webpack({
+		mode: 'development',
+		target: 'web',
+		context: folder,
+		output: {
+			filename: '[name].js',
+			path: join(folder, 'dist')
 		},
-		'First build output'
-	);
+		plugins: [
+			new GlobPlugin({
+				entries: './src/node_modules/apps/*.js',
+				polyfills: [
+					'./src/polyfill1.js',
+					'thirdparty-polyfill'
+				]
+			}),
+			testplugin
+		]
+	}, (_err, _stats) => {}); // eslint-disable-line no-empty-function
+
+	setTimeout(() => {
+		done();
+	}, 5000);
+
+	setTimeout(() => {
+		strictEqual(testplugin.builds.length >= 1, true, `At least one build`);
+		deepStrictEqual(
+			testplugin.builds[0],
+			{
+				input: {
+					'module-1': [
+						'./src/polyfill1.js',
+						'thirdparty-polyfill',
+						'./src/node_modules/apps/module-1.js'
+					],
+					'module-2': [
+						'./src/polyfill1.js',
+						'thirdparty-polyfill',
+						'./src/node_modules/apps/module-2.js'
+					],
+					'module-3': [
+						'./src/polyfill1.js',
+						'thirdparty-polyfill',
+						'./src/node_modules/apps/module-3.js'
+					]
+				},
+				output: {
+					'module-1': {
+						chunks: ['module-1'],
+						assets: ['module-1.js']
+					},
+					'module-2': {
+						chunks: ['module-2'],
+						assets: ['module-2.js']
+					},
+					'module-3': {
+						chunks: ['module-3'],
+						assets: ['module-3.js']
+					}
+				}
+			},
+			'First build'
+		);
+	}, 4000);
 });

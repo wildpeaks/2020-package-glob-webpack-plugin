@@ -3,52 +3,68 @@
 /* eslint-disable prefer-arrow-callback */
 'use strict';
 const {deepStrictEqual, strictEqual} = require('assert');
-const WebpackRunner = require('./WebpackRunner.js');
-const runner = new WebpackRunner('custom-names');
+const {basename, join} = require('path');
+const webpack = require('webpack');
+
+const GlobPlugin = require('..');
+const {resetSingle, TestPlugin} = require('./shared.js');
 
 
-after(async function(){
-	await runner.stop();
-});
-
-
-it('Single: Custom Names', async function(){
+it('Single: Custom Names', function(done){
 	this.slow(8000);
-	this.timeout(60000);
+	this.timeout(12000);
 
-	runner.resetSingle();
-	runner.start();
+	const folder = join(__dirname, 'fixtures/custom-names');
+	resetSingle(folder);
+	const testplugin = new TestPlugin();
 
-	let throws = false;
-	try {
-		await runner.waitUntilBuild(1);
-	} catch(e){
-		throws = true;
-	}
-	strictEqual(throws, false, `First build runs`);
-	deepStrictEqual(
-		runner.builds[0],
-		{
-			input: {
-				'custom-basic-1': './src/basic-1.js',
-				'custom-basic-2': './src/basic-2.js',
-				'custom-basic-3': './src/basic-3.js'
-			},
-			output: {
-				'custom-basic-1': {
-					chunks: ['custom-basic-1'],
-					assets: ['custom-basic-1.js']
-				},
-				'custom-basic-2': {
-					chunks: ['custom-basic-2'],
-					assets: ['custom-basic-2.js']
-				},
-				'custom-basic-3': {
-					chunks: ['custom-basic-3'],
-					assets: ['custom-basic-3.js']
-				}
-			}
+	webpack({
+		mode: 'development',
+		target: 'web',
+		context: folder,
+		output: {
+			filename: '[name].js',
+			path: join(folder, 'dist')
 		},
-		'First build output'
-	);
+		plugins: [
+			new GlobPlugin({
+				entries: './src/*.js',
+				entriesMap: filepath => 'custom-' + basename(filepath, '.js')
+			}),
+			testplugin
+		]
+	}, (_err, _stats) => {}); // eslint-disable-line no-empty-function
+
+	setTimeout(() => {
+		done();
+	}, 5000);
+
+	setTimeout(() => {
+		strictEqual(testplugin.builds.length >= 1, true, `At least one build`);
+		deepStrictEqual(
+			testplugin.builds[0],
+			{
+				input: {
+					'custom-basic-1': './src/basic-1.js',
+					'custom-basic-2': './src/basic-2.js',
+					'custom-basic-3': './src/basic-3.js'
+				},
+				output: {
+					'custom-basic-1': {
+						chunks: ['custom-basic-1'],
+						assets: ['custom-basic-1.js']
+					},
+					'custom-basic-2': {
+						chunks: ['custom-basic-2'],
+						assets: ['custom-basic-2.js']
+					},
+					'custom-basic-3': {
+						chunks: ['custom-basic-3'],
+						assets: ['custom-basic-3.js']
+					}
+				}
+			},
+			'First build'
+		);
+	}, 4000);
 });

@@ -3,47 +3,68 @@
 /* eslint-disable prefer-arrow-callback */
 'use strict';
 const {deepStrictEqual, strictEqual} = require('assert');
-const WebpackRunner = require('./WebpackRunner.js');
-const runner = new WebpackRunner('watch-initial');
+const {join} = require('path');
+const webpack = require('webpack');
+
+const GlobPlugin = require('..');
+const {resetWatch, TestPlugin} = require('./shared.js');
 
 
-after(async function(){
-	await runner.stop();
-});
+it('Watch: Initial', function(done){
+	this.slow(10000);
+	this.timeout(20000);
 
+	const folder = join(__dirname, 'fixtures/watch-initial');
+	resetWatch(folder);
 
-it('Watch: Initial', async function(){
-	this.slow(8000);
-	this.timeout(60000);
+	const testplugin = new TestPlugin();
 
-	runner.resetWatch();
-	runner.start();
-
-	let throws = false;
-	try {
-		await runner.waitUntilBuild(1);
-	} catch(e){
-		throws = true;
-	}
-	strictEqual(throws, false, `First build runs`);
-	deepStrictEqual(
-		runner.builds[0],
-		{
-			input: {
-				'initial-1': './src/initial-1.js',
-				'initial-2': './src/initial-2.js'
-			},
-			output: {
-				'initial-1': {
-					chunks: ['initial-1'],
-					assets: ['initial-1.js']
-				},
-				'initial-2': {
-					chunks: ['initial-2'],
-					assets: ['initial-2.js']
-				}
-			}
+	const compiler = webpack({
+		mode: 'development',
+		target: 'web',
+		context: folder,
+		watchOptions: {
+			aggregateTimeout: 800
 		},
-		'First build output'
-	);
+		output: {
+			filename: '[name].js',
+			path: join(folder, 'dist')
+		},
+		plugins: [
+			new GlobPlugin({
+				entries: './src/*.js'
+			}),
+			testplugin
+		]
+	});
+	const watching = compiler.watch({aggregateTimeout: 300}, (_err, _stats) => {}); // eslint-disable-line no-empty-function
+
+	setTimeout(() => {
+		watching.close();
+		done();
+	}, 5000);
+
+	setTimeout(() => {
+		strictEqual(testplugin.builds.length >= 1, true, `At least one build`);
+		deepStrictEqual(
+			testplugin.builds[0],
+			{
+				input: {
+					'initial-1': './src/initial-1.js',
+					'initial-2': './src/initial-2.js'
+				},
+				output: {
+					'initial-1': {
+						chunks: ['initial-1'],
+						assets: ['initial-1.js']
+					},
+					'initial-2': {
+						chunks: ['initial-2'],
+						assets: ['initial-2.js']
+					}
+				}
+			},
+			'First build'
+		);
+	}, 4000);
 });

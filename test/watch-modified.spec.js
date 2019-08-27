@@ -2,86 +2,101 @@
 /* eslint-disable no-invalid-this */
 /* eslint-disable prefer-arrow-callback */
 'use strict';
-const {strictEqual, deepStrictEqual} = require('assert');
+const {deepStrictEqual, strictEqual} = require('assert');
 const {readFileSync, writeFileSync} = require('fs');
 const {join} = require('path');
-const WebpackRunner = require('./WebpackRunner.js');
-const runner = new WebpackRunner('watch-modified');
+const webpack = require('webpack');
+
+const GlobPlugin = require('..');
+const {resetWatch, TestPlugin} = require('./shared.js');
 
 
-after(async function(){
-	await runner.stop();
-});
+it('Watch: Modified', function(done){
+	this.slow(10000);
+	this.timeout(20000);
 
+	const folder = join(__dirname, 'fixtures/watch-modified');
+	resetWatch(folder);
 
-it('Watch: Modified', async function(){
-	this.slow(8000);
-	this.timeout(60000);
+	let outputBefore = '';
+	const testplugin = new TestPlugin(index => {
+		if (index === 0){
+			outputBefore = readFileSync(join(folder, 'dist/initial-2.js'), 'utf8');
+			writeFileSync(join(folder, 'src/initial-2.js'), `console.log("MODIFIED BY SCRIPT");\n`, 'utf8');
+		}
+	});
 
-	runner.resetWatch();
-	runner.start();
-
-	let throws = false;
-	try {
-		await runner.waitUntilBuild(1);
-	} catch(e){
-		throws = true;
-	}
-	strictEqual(throws, false, `First build runs`);
-	deepStrictEqual(
-		runner.builds[0],
-		{
-			input: {
-				'initial-1': './src/initial-1.js',
-				'initial-2': './src/initial-2.js'
-			},
-			output: {
-				'initial-1': {
-					chunks: ['initial-1'],
-					assets: ['initial-1.js']
-				},
-				'initial-2': {
-					chunks: ['initial-2'],
-					assets: ['initial-2.js']
-				}
-			}
+	const compiler = webpack({
+		mode: 'development',
+		target: 'web',
+		context: folder,
+		watchOptions: {
+			aggregateTimeout: 800
 		},
-		'First build output'
-	);
-
-	const contentsBefore = readFileSync(join(runner.folder, 'dist/initial-2.js'), 'utf8');
-	strictEqual(contentsBefore.includes('MODIFIED BY SCRIPT'), false, `First build doesn't contain the modified code`);
-
-	writeFileSync(join(runner.folder, 'src/initial-2.js'), `console.log("MODIFIED BY SCRIPT");\n`, 'utf8');
-
-	throws = false;
-	try {
-		await runner.waitUntilBuild(2);
-	} catch(e){
-		throws = true;
-	}
-	strictEqual(throws, false, `Second build runs`);
-	deepStrictEqual(
-		runner.builds[1],
-		{
-			input: {
-				'initial-1': './src/initial-1.js',
-				'initial-2': './src/initial-2.js'
-			},
-			output: {
-				'initial-1': {
-					chunks: ['initial-1'],
-					assets: ['initial-1.js']
-				},
-				'initial-2': {
-					chunks: ['initial-2'],
-					assets: ['initial-2.js']
-				}
-			}
+		output: {
+			filename: '[name].js',
+			path: join(folder, 'dist')
 		},
-		'Second build output'
-	);
+		plugins: [
+			new GlobPlugin({
+				entries: './src/*.js'
+			}),
+			testplugin
+		]
+	});
+	const watching = compiler.watch({aggregateTimeout: 300}, (_err, _stats) => {}); // eslint-disable-line no-empty-function
 
-	const contentsAfter = readFileSync(join(runner.folder, 'dist/initial-2.js'), 'utf8');
-	strictEqual(contentsAfter.includes('MODIFIED BY SCRIPT'), true, 'Second build contains the modified code');
+	setTimeout(() => {
+		watching.close();
+		done();
+	}, 5000);
+
+	setTimeout(() => {
+		strictEqual(testplugin.builds.length >= 2, true, `At least two builds`);
+		deepStrictEqual(
+			testplugin.builds[0],
+			{
+				input: {
+					'initial-1': './src/initial-1.js',
+					'initial-2': './src/initial-2.js'
+				},
+				output: {
+					'initial-1': {
+						chunks: ['initial-1'],
+						assets: ['initial-1.js']
+					},
+					'initial-2': {
+						chunks: ['initial-2'],
+						assets: ['initial-2.js']
+					}
+				}
+			},
+			'First build'
+		);
+		deepStrictEqual(
+			testplugin.builds[testplugin.builds.length - 1],
+			{
+				input: {
+					'initial-1': './src/initial-1.js',
+					'initial-2': './src/initial-2.js'
+				},
+				output: {
+					'initial-1': {
+						chunks: ['initial-1'],
+						assets: ['initial-1.js']
+					},
+					'initial-2': {
+						chunks: ['initial-2'],
+						assets: ['initial-2.js']
+					}
+				}
+			},
+			'Last build'
+		);
+
+		const outputAfter = readFileSync(join(folder, 'dist/initial-2.js'), 'utf8');
+		strictEqual(outputBefore.includes('MODIFIED BY SCRIPT'), false, `First build doesn't contain the modified code`);
+		strictEqual(outputAfter.includes('MODIFIED BY SCRIPT'), true, `Last build contains the modified code`);
+
+	}, 4000);
 });
