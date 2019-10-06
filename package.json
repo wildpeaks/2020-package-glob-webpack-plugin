@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/wildpeaks/package-glob-webpack-plugin#readme",
   "dependencies": {
-    "fast-glob": "3.0.4",
+    "fast-glob": "3.1.0",
     "glob-parent": "5.1.0"
   },
   "devDependencies": {
