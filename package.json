@@ -1,6 +1,6 @@
 {
   "name": "@wildpeaks/glob-webpack-plugin",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Webpack config to define entry with a glob",
   "author": "Cecile Muller",
   "license": "MIT",
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/wildpeaks/package-glob-webpack-plugin#readme",
   "dependencies": {
-    "fast-glob": "3.0.4",
+    "fast-glob": "3.1.0",
     "glob-parent": "5.1.0"
   },
   "devDependencies": {
