@@ -4,11 +4,22 @@
   "description": "Webpack config to define entry with a glob",
   "author": "Cecile Muller",
   "license": "MIT",
+  "keywords": [
+    "wildpeaks",
+    "webpack",
+    "plugin",
+    "glob"
+  ],
+  "homepage": "https://github.com/wildpeaks/package-glob-webpack-plugin#readme",
+  "repository": "https://github.com/wildpeaks/package-glob-webpack-plugin",
+  "bugs": {
+    "url": "https://github.com/wildpeaks/package-glob-webpack-plugin/issues"
+  },
   "eslintConfig": {
     "extends": "@wildpeaks/commonjs"
   },
-  "types": "src/Plugin.d.ts",
   "main": "src/Plugin.js",
+  "types": "src/Plugin.d.ts",
   "files": [
     "src"
   ],
@@ -16,17 +27,9 @@
     "test": "mocha test/*.spec.js",
     "test:azure": "mocha test/*.spec.js --reporter mocha-junit-reporter --reporter-options mochaFile=./test-results.xml"
   },
-  "repository": "https://github.com/wildpeaks/package-glob-webpack-plugin",
-  "keywords": [
-    "wildpeaks",
-    "webpack",
-    "plugin",
-    "glob"
-  ],
-  "bugs": {
-    "url": "https://github.com/wildpeaks/package-glob-webpack-plugin/issues"
+  "peerDependencies": {
+    "webpack": "*"
   },
-  "homepage": "https://github.com/wildpeaks/package-glob-webpack-plugin#readme",
   "dependencies": {
     "fast-glob": "3.1.1",
     "glob-parent": "5.1.0"
@@ -39,8 +42,5 @@
     "rimraf": "3.0.0",
     "webpack": "4.41.4",
     "webpack-cli": "3.3.10"
-  },
-  "peerDependencies": {
-    "webpack": "*"
   }
 }
