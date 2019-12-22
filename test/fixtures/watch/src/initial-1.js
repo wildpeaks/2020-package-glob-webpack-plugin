@@ -1,2 +1,3 @@
-'use strict';
-console.log('INITIAL 1');
+/* eslint-env browser */
+"use strict";
+console.log("INITIAL 1");

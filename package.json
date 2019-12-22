@@ -4,43 +4,54 @@
   "description": "Webpack config to define entry with a glob",
   "author": "Cecile Muller",
   "license": "MIT",
-  "eslintConfig": {
-    "extends": "@wildpeaks/commonjs"
-  },
-  "types": "src/Plugin.d.ts",
-  "main": "src/Plugin.js",
-  "files": [
-    "src"
-  ],
-  "scripts": {
-    "test": "mocha test/*.spec.js",
-    "test:azure": "mocha test/*.spec.js --reporter mocha-junit-reporter --reporter-options mochaFile=./test-results.xml"
-  },
-  "repository": "https://github.com/wildpeaks/package-glob-webpack-plugin",
   "keywords": [
     "wildpeaks",
     "webpack",
     "plugin",
     "glob"
   ],
+  "homepage": "https://github.com/wildpeaks/package-glob-webpack-plugin#readme",
+  "repository": "https://github.com/wildpeaks/package-glob-webpack-plugin",
   "bugs": {
     "url": "https://github.com/wildpeaks/package-glob-webpack-plugin/issues"
   },
-  "homepage": "https://github.com/wildpeaks/package-glob-webpack-plugin#readme",
+  "eslintConfig": {
+    "extends": "@wildpeaks/commonjs"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "tabWidth": 4,
+    "useTabs": true,
+    "bracketSpacing": false
+  },
+  "greenkeeper": {
+    "commitMessages": {
+      "dependencyUpdate": "feat: update ${dependency}",
+      "devDependencyUpdate": "chore: update ${dependency}"
+    }
+  },
+  "main": "src/Plugin.js",
+  "types": "src/Plugin.d.ts",
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test": "mocha test/*.spec.js"
+  },
+  "peerDependencies": {
+    "webpack": "*"
+  },
   "dependencies": {
     "fast-glob": "3.1.1",
     "glob-parent": "5.1.0"
   },
   "devDependencies": {
-    "@wildpeaks/eslint-config-commonjs": "7.3.0",
+    "@wildpeaks/eslint-config-commonjs": "8.0.0-alpha8",
     "eslint": "6.8.0",
     "mocha": "6.2.2",
-    "mocha-junit-reporter": "1.23.1",
+    "prettier": "1.19.1",
     "rimraf": "3.0.0",
     "webpack": "4.41.4",
     "webpack-cli": "3.3.10"
-  },
-  "peerDependencies": {
-    "webpack": "*"
   }
 }

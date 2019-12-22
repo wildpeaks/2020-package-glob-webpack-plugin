@@ -1,8 +1,8 @@
+/* eslint-disable */
 declare module "@wildpeaks/glob-webpack-plugin" {
 	type EntryMapCallback = (filepath: string) => string;
 
 	type Options = {
-
 		/** Glob pattern (e.g. `'./src/*.js'`) */
 		entries: string;
 
