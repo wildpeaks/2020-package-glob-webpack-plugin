@@ -1,38 +1,41 @@
 /* eslint-env node, mocha */
 /* eslint-disable no-invalid-this */
 /* eslint-disable prefer-arrow-callback */
-'use strict';
-const {deepStrictEqual, strictEqual} = require('assert');
-const {join} = require('path');
-const webpack = require('webpack');
+"use strict";
+const {deepStrictEqual, strictEqual} = require("assert");
+const {join} = require("path");
+const webpack = require("webpack");
 
-const GlobPlugin = require('..');
-const {resetSingle, TestPlugin} = require('./shared.js');
+const GlobPlugin = require("..");
+const {resetSingle, TestPlugin} = require("./shared.js");
 
-
-it('Single: Local Modules', function(done){
+it("Single: Local Modules", function(done) {
 	this.slow(8000);
 	this.timeout(12000);
 
-	const folder = join(__dirname, 'fixtures/local-modules');
+	const folder = join(__dirname, "fixtures/local-modules");
 	resetSingle(folder);
 	const testplugin = new TestPlugin();
 
-	webpack({
-		mode: 'development',
-		target: 'web',
-		context: folder,
-		output: {
-			filename: '[name].js',
-			path: join(folder, 'dist')
+	webpack(
+		{
+			mode: "development",
+			target: "web",
+			context: folder,
+			output: {
+				filename: "[name].js",
+				path: join(folder, "dist")
+			},
+			plugins: [
+				new GlobPlugin({
+					entries: "./src/node_modules/apps/*.js"
+				}),
+				testplugin
+			]
 		},
-		plugins: [
-			new GlobPlugin({
-				entries: './src/node_modules/apps/*.js'
-			}),
-			testplugin
-		]
-	}, (_err, _stats) => {}); // eslint-disable-line no-empty-function
+		// eslint-disable-next-line no-empty-function
+		(_err, _stats) => {}
+	);
 
 	setTimeout(() => {
 		done();
@@ -44,26 +47,26 @@ it('Single: Local Modules', function(done){
 			testplugin.builds[0],
 			{
 				input: {
-					'module-1': './src/node_modules/apps/module-1.js',
-					'module-2': './src/node_modules/apps/module-2.js',
-					'module-3': './src/node_modules/apps/module-3.js'
+					"module-1": "./src/node_modules/apps/module-1.js",
+					"module-2": "./src/node_modules/apps/module-2.js",
+					"module-3": "./src/node_modules/apps/module-3.js"
 				},
 				output: {
-					'module-1': {
-						chunks: ['module-1'],
-						assets: ['module-1.js']
+					"module-1": {
+						chunks: ["module-1"],
+						assets: ["module-1.js"]
 					},
-					'module-2': {
-						chunks: ['module-2'],
-						assets: ['module-2.js']
+					"module-2": {
+						chunks: ["module-2"],
+						assets: ["module-2.js"]
 					},
-					'module-3': {
-						chunks: ['module-3'],
-						assets: ['module-3.js']
+					"module-3": {
+						chunks: ["module-3"],
+						assets: ["module-3.js"]
 					}
 				}
 			},
-			'First build'
+			"First build"
 		);
 	}, 4000);
 });
