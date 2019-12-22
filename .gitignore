@@ -14,7 +14,6 @@
 !/src
 !/test
 !/package.json
-!/tsconfig.json
 !/azure-pipelines.yml
 
 # But make sure to ignore these regardless:
