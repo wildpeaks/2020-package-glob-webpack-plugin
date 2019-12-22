@@ -11,7 +11,7 @@ const GlobPlugin = require("..");
 const {resetWatch, TestPlugin} = require("./shared.js");
 
 it("Watch: Deleted", function(done) {
-	this.slow(10000);
+	this.slow(20000);
 	this.timeout(20000);
 
 	const folder = join(__dirname, "fixtures/watch-deleted");

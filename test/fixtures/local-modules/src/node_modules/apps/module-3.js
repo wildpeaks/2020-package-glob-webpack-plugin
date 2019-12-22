@@ -1,3 +1,3 @@
 /* eslint-env browser */
-'use strict';
-console.log('APP 3');
+"use strict";
+console.log("APP 3");

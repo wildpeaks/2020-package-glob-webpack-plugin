@@ -10,8 +10,8 @@ const GlobPlugin = require("..");
 const {resetSingle, TestPlugin} = require("./shared.js");
 
 it("Single: Polyfills", function(done) {
-	this.slow(8000);
-	this.timeout(12000);
+	this.slow(15000);
+	this.timeout(15000);
 
 	const folder = join(__dirname, "fixtures/polyfills");
 	resetSingle(folder);
@@ -28,7 +28,7 @@ it("Single: Polyfills", function(done) {
 			},
 			plugins: [
 				new GlobPlugin({
-					entries: "./src/node_modules/apps/*.js",
+					entries: "./src/apps/*.js",
 					polyfills: ["./src/polyfill1.js", "thirdparty-polyfill"]
 				}),
 				testplugin
@@ -48,9 +48,9 @@ it("Single: Polyfills", function(done) {
 			testplugin.builds[0],
 			{
 				input: {
-					"module-1": ["./src/polyfill1.js", "thirdparty-polyfill", "./src/node_modules/apps/module-1.js"],
-					"module-2": ["./src/polyfill1.js", "thirdparty-polyfill", "./src/node_modules/apps/module-2.js"],
-					"module-3": ["./src/polyfill1.js", "thirdparty-polyfill", "./src/node_modules/apps/module-3.js"]
+					"module-1": ["./src/polyfill1.js", "thirdparty-polyfill", "./src/apps/module-1.js"],
+					"module-2": ["./src/polyfill1.js", "thirdparty-polyfill", "./src/apps/module-2.js"],
+					"module-3": ["./src/polyfill1.js", "thirdparty-polyfill", "./src/apps/module-3.js"]
 				},
 				output: {
 					"module-1": {

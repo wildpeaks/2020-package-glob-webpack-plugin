@@ -10,8 +10,8 @@ const GlobPlugin = require("..");
 const {resetSingle, TestPlugin} = require("./shared.js");
 
 it("Single: Basic", function(done) {
-	this.slow(8000);
-	this.timeout(12000);
+	this.slow(15000);
+	this.timeout(15000);
 
 	const folder = join(__dirname, "fixtures/basic");
 	resetSingle(folder);
