@@ -20,7 +20,7 @@ class Plugin {
 		this.entries = entries;
 
 		if (typeof entriesMap === "undefined") {
-			entriesMap = filepath => basename(filepath, extname(filepath));
+			entriesMap = (filepath) => basename(filepath, extname(filepath));
 		}
 		if (typeof entriesMap !== "function") {
 			throw new Error('Property "entriesMap" should be a function');
@@ -41,7 +41,7 @@ class Plugin {
 			const {entries, entriesMap, polyfills} = this;
 			const hasPolyfills = polyfills.length > 0;
 			const generated = {};
-			fg.sync([entries], {dot: false, followSymbolicLinks: true, cwd: compiler.context}).forEach(filepath => {
+			fg.sync([entries], {dot: false, followSymbolicLinks: true, cwd: compiler.context}).forEach((filepath) => {
 				const name = entriesMap(filepath);
 				if (typeof name === "string" && name !== "") {
 					generated[name] = hasPolyfills ? polyfills.concat([filepath]) : filepath;
@@ -50,7 +50,7 @@ class Plugin {
 			return generated;
 		};
 
-		compiler.hooks.afterCompile.tap(PLUGIN_ID, compilation => {
+		compiler.hooks.afterCompile.tap(PLUGIN_ID, (compilation) => {
 			compilation.contextDependencies.add(join(compiler.context, globParent(this.entries)));
 		});
 	}

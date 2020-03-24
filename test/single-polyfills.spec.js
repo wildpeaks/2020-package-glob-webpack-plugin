@@ -9,7 +9,7 @@ const webpack = require("webpack");
 const GlobPlugin = require("..");
 const {resetSingle, TestPlugin} = require("./shared.js");
 
-it("Single: Polyfills", function(done) {
+it("Single: Polyfills", function (done) {
 	this.slow(15000);
 	this.timeout(15000);
 

@@ -9,7 +9,7 @@ const webpack = require("webpack");
 const GlobPlugin = require("..");
 const {resetSingle, TestPlugin} = require("./shared.js");
 
-it("Single: Local Modules", function(done) {
+it("Single: Local Modules", function (done) {
 	this.slow(15000);
 	this.timeout(15000);
 
