@@ -9,7 +9,7 @@ const webpack = require("webpack");
 const GlobPlugin = require("..");
 const {resetSingle, TestPlugin} = require("./shared.js");
 
-it("Single: Custom Names", function(done) {
+it("Single: Custom Names", function (done) {
 	this.slow(15000);
 	this.timeout(15000);
 
@@ -29,7 +29,7 @@ it("Single: Custom Names", function(done) {
 			plugins: [
 				new GlobPlugin({
 					entries: "./src/*.js",
-					entriesMap: filepath => "custom-" + basename(filepath, ".js")
+					entriesMap: (filepath) => "custom-" + basename(filepath, ".js")
 				}),
 				testplugin
 			]

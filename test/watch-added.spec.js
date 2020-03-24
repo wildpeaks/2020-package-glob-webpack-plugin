@@ -10,14 +10,14 @@ const webpack = require("webpack");
 const GlobPlugin = require("..");
 const {resetWatch, TestPlugin} = require("./shared.js");
 
-it("Watch: Added", function(done) {
+it("Watch: Added", function (done) {
 	this.slow(20000);
 	this.timeout(20000);
 
 	const folder = join(__dirname, "fixtures/watch-added");
 	resetWatch(folder);
 
-	const testplugin = new TestPlugin(index => {
+	const testplugin = new TestPlugin((index) => {
 		if (index === 0) {
 			writeFileSync(join(folder, "src/added-3.js"), `console.log("ADDED 3");`, "utf8");
 			writeFileSync(join(folder, "src/added-4.js"), `console.log("ADDED 4");`, "utf8");

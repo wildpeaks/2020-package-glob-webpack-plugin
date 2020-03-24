@@ -10,7 +10,7 @@ const webpack = require("webpack");
 const GlobPlugin = require("..");
 const {resetWatch, TestPlugin} = require("./shared.js");
 
-it("Watch: Modified", function(done) {
+it("Watch: Modified", function (done) {
 	this.slow(20000);
 	this.timeout(20000);
 
@@ -18,7 +18,7 @@ it("Watch: Modified", function(done) {
 	resetWatch(folder);
 
 	let outputBefore = "";
-	const testplugin = new TestPlugin(index => {
+	const testplugin = new TestPlugin((index) => {
 		if (index === 0) {
 			outputBefore = readFileSync(join(folder, "dist/initial-2.js"), "utf8");
 			writeFileSync(join(folder, "src/initial-2.js"), `console.log("MODIFIED BY SCRIPT");\n`, "utf8");

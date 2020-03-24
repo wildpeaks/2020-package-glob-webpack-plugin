@@ -9,7 +9,7 @@ const webpack = require("webpack");
 const GlobPlugin = require("..");
 const {resetWatch, TestPlugin} = require("./shared.js");
 
-it("Watch: Initial", function(done) {
+it("Watch: Initial", function (done) {
 	this.slow(20000);
 	this.timeout(20000);
 

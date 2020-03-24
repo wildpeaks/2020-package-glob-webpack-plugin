@@ -33,12 +33,12 @@ class TestPlugin {
 	apply(compiler) {
 		let input = {};
 
-		compiler.hooks.afterEmit.tap("wildpeaks-tests", compilation => {
+		compiler.hooks.afterEmit.tap("wildpeaks-tests", (compilation) => {
 			const {entries} = compilation;
 			for (const entry of entries) {
 				let request;
 				if (entry.dependencies.length > 1) {
-					request = entry.dependencies.map(dep => dep.request);
+					request = entry.dependencies.map((dep) => dep.request);
 				} else {
 					request = entry.rawRequest;
 				}
@@ -56,7 +56,7 @@ class TestPlugin {
 			}
 		});
 
-		compiler.hooks.done.tap("wildpeaks-tests", raw => {
+		compiler.hooks.done.tap("wildpeaks-tests", (raw) => {
 			const output = {};
 			try {
 				const stats = raw.toJson();

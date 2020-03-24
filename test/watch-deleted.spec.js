@@ -10,14 +10,14 @@ const webpack = require("webpack");
 const GlobPlugin = require("..");
 const {resetWatch, TestPlugin} = require("./shared.js");
 
-it("Watch: Deleted", function(done) {
+it("Watch: Deleted", function (done) {
 	this.slow(20000);
 	this.timeout(20000);
 
 	const folder = join(__dirname, "fixtures/watch-deleted");
 	resetWatch(folder);
 
-	const testplugin = new TestPlugin(index => {
+	const testplugin = new TestPlugin((index) => {
 		if (index === 0) {
 			unlinkSync(join(folder, "src/initial-1.js"));
 			if (process.platform.includes("win")) {

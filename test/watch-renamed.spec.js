@@ -10,14 +10,14 @@ const webpack = require("webpack");
 const GlobPlugin = require("..");
 const {resetWatch, TestPlugin} = require("./shared.js");
 
-it("Watch: Renamed", function(done) {
+it("Watch: Renamed", function (done) {
 	this.slow(20000);
 	this.timeout(20000);
 
 	const folder = join(__dirname, "fixtures/watch-renamed");
 	resetWatch(folder);
 
-	const testplugin = new TestPlugin(index => {
+	const testplugin = new TestPlugin((index) => {
 		if (index === 0) {
 			renameSync(join(folder, "src/initial-1.js"), join(folder, "src/renamed-1.js"));
 			if (process.platform.includes("win")) {
