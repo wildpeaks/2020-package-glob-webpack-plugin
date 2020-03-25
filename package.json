@@ -1,6 +1,6 @@
 {
   "name": "@wildpeaks/glob-webpack-plugin",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Webpack config to define entry with a glob",
   "author": "Cecile Muller",
   "license": "MIT",
@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "fast-glob": "3.2.2",
-    "glob-parent": "5.1.0"
+    "glob-parent": "5.1.1"
   },
   "devDependencies": {
     "@wildpeaks/eslint-config-commonjs": "9.0.0",
