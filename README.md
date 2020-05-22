@@ -1,6 +1,6 @@
 # Glob Webpack Plugin
 
-
+![Github Release](https://img.shields.io/github/v/release/wildpeaks/package-glob-webpack-plugin.svg?label=Release&logo=github&logoColor=eceff4&colorA=4c566a&colorB=11abfb)
 
 Webpack 4.x plugin to define `entry` using a **glob**.
 
