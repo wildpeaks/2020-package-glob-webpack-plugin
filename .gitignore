@@ -15,7 +15,6 @@
 !/src
 !/test
 !/package.json
-!/azure-pipelines.yml
 
 # But make sure to ignore these regardless:
 WAS *
