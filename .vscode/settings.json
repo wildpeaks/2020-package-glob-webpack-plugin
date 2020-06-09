@@ -1,4 +1,5 @@
 {
+	"mochaExplorer.files": "test/**/*.test.js",
 	"eslint.validate": [
 		"javascript"
 	],
