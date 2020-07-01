@@ -1,6 +1,6 @@
 {
   "name": "@wildpeaks/glob-webpack-plugin",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "description": "Webpack config to define entry with a glob",
   "author": "Cecile Muller",
   "license": "MIT",
