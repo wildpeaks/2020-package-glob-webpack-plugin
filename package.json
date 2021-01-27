@@ -41,7 +41,7 @@
     "glob-parent": "5.1.1"
   },
   "devDependencies": {
-    "@wildpeaks/eslint-config-commonjs": "10.7.0",
+    "@wildpeaks/eslint-config-commonjs": "11.0.0",
     "eslint": "7.18.0",
     "mocha": "8.2.1",
     "prettier": "2.2.1",
