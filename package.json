@@ -38,7 +38,7 @@
   "devDependencies": {
     "@wildpeaks/eslint-config-commonjs": "11.1.0",
     "@wildpeaks/prettier-config": "11.1.0",
-    "eslint": "7.20.0",
+    "eslint": "7.21.0",
     "mocha": "8.3.0",
     "rimraf": "3.0.2",
     "webpack": "4.46.0",
