@@ -19,4 +19,5 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
     - run: npm install --prefer-offline --no-fund --no-progres
-    - run: npm test
+    - run: npm run lint
+    - run: npm run test

@@ -25,6 +25,7 @@
     "src"
   ],
   "scripts": {
+    "lint": "eslint src",
     "test": "mocha test/*.test.js"
   },
   "peerDependencies": {
