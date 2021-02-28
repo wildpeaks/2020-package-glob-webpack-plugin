@@ -18,13 +18,7 @@
   "eslintConfig": {
     "extends": "@wildpeaks/commonjs"
   },
-  "prettier": {
-    "printWidth": 120,
-    "tabWidth": 4,
-    "useTabs": true,
-    "bracketSpacing": false,
-    "trailingComma": "none"
-  },
+  "prettier": "@wildpeaks/prettier-config",
   "main": "src/Plugin.js",
   "types": "src/Plugin.d.ts",
   "files": [
@@ -42,9 +36,9 @@
   },
   "devDependencies": {
     "@wildpeaks/eslint-config-commonjs": "11.1.0",
+    "@wildpeaks/prettier-config": "11.1.0",
     "eslint": "7.20.0",
     "mocha": "8.3.0",
-    "prettier": "2.2.1",
     "rimraf": "3.0.2",
     "webpack": "4.46.0",
     "webpack-cli": "3.3.12"
