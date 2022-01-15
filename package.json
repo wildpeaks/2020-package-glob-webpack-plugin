@@ -32,7 +32,7 @@
     "webpack": "*"
   },
   "dependencies": {
-    "fast-glob": "3.2.5",
+    "fast-glob": "3.2.11",
     "glob-parent": "5.1.1"
   },
   "devDependencies": {
